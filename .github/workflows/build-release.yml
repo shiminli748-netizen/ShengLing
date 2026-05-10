@@ -26,6 +26,7 @@ jobs:
           mkdir -p app/libs
           curl -SL -o app/libs/sherpa-onnx-1.13.1.aar \
             https://github.com/k2-fsa/sherpa-onnx/releases/download/v1.13.1/sherpa-onnx-1.13.1.aar
+          ls -lh app/libs/
 
       - name: Download ZipVoice TTS model
         run: |
@@ -33,30 +34,22 @@ jobs:
           cd /tmp
           curl -SL -o zipvoice.tar.bz2 \
             https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/sherpa-onnx-zipvoice-distill-zh-en-emilia.tar.bz2
-          tar xf zipvoice.tar.bz2
+          tar xjf zipvoice.tar.bz2
           rm zipvoice.tar.bz2
+          ls -la sherpa-onnx-zipvoice-distill-zh-en-emilia/
           cp -r sherpa-onnx-zipvoice-distill-zh-en-emilia \
             $GITHUB_WORKSPACE/app/src/main/assets/models/
-          ls -la $GITHUB_WORKSPACE/app/src/main/assets/models/sherpa-onnx-zipvoice-distill-zh-en-emilia/
+          echo "=== Model files ==="
+          find $GITHUB_WORKSPACE/app/src/main/assets/models/ -type f | head -20
+
+      - name: Generate Gradle wrapper
+        run: gradle wrapper --gradle-version 8.9
 
       - name: Grant execute permission for gradlew
-        run: chmod +x gradlew || true
+        run: chmod +x gradlew
 
       - name: Build Debug APK
-        run: |
-          ./gradlew assembleDebug || {
-            echo "Gradle wrapper not found, creating it..."
-            mkdir -p gradle/wrapper
-            cat > gradle/wrapper/gradle-wrapper.properties << 'EOF'
-          distributionBase=GRADLE_USER_HOME
-          distributionPath=wrapper/dists
-          distributionUrl=https\://services.gradle.org/distributions/gradle-8.9-bin.zip
-          zipStoreBase=GRADLE_USER_HOME
-          zipStorePath=wrapper/dists
-          EOF
-            gradle wrapper --gradle-version 8.9
-            ./gradlew assembleDebug
-          }
+        run: ./gradlew assembleDebug --stacktrace
 
       - name: Build Release APK
         run: ./gradlew assembleRelease || true
