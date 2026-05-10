@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">声灵</string>
+    <string name="app_subtitle">本地AI声音克隆</string>
+    <string name="app_description">上传3-15秒参考音频，AI学习声音特征，输入任意文本即可用该声音朗读</string>
+
+    <string name="btn_start">开始使用</string>
+    <string name="btn_clone">开始克隆</string>
+    <string name="btn_generate">生成语音</string>
+    <string name="btn_play">播放</string>
+    <string name="btn_stop">停止</string>
+    <string name="btn_save">保存</string>
+    <string name="btn_share">分享</string>
+    <string name="btn_record">录制音频</string>
+    <string name="btn_select_file">选择文件</string>
+    <string name="btn_rerecord">重新录制</string>
+    <string name="btn_next">下一步</string>
+
+    <string name="title_init">模型初始化</string>
+    <string name="title_clone">声音克隆</string>
+    <string name="title_tts">语音合成</string>
+
+    <string name="hint_input_text">请输入要朗读的文本</string>
+    <string name="hint_reference_audio">请选择3-15秒的参考音频</string>
+
+    <string name="status_init_copying">正在复制模型文件…</string>
+    <string name="status_init_loading">正在加载AI模型…</string>
+    <string name="status_init_done">模型加载完成</string>
+    <string name="status_analyzing">正在分析声音特征…</string>
+    <string name="status_extracting">提取声纹中…</string>
+    <string name="status_generating_model">生成声音模型…</string>
+    <string name="status_clone_done">克隆完成！可输入文本测试</string>
+    <string name="status_generating">正在生成语音…</string>
+    <string name="status_playing">播放中</string>
+    <string name="status_saved">已保存到本地</string>
+
+    <string name="progress_copying">复制模型文件… %1$d/%2$d</string>
+    <string name="progress_analyzing">正在分析声音特征… %1$d%%</string>
+    <string name="progress_extracting">提取声纹中… %1$d%%</string>
+    <string name="progress_generating_model">生成声音模型… %1$d%%</string>
+    <string name="progress_generating_audio">正在生成语音…</string>
+
+    <string name="error_no_audio">请先选择或录制参考音频</string>
+    <string name="error_audio_too_short">音频时长不足3秒，请重新录制</string>
+    <string name="error_audio_too_long">音频时长超过15秒，请重新录制</string>
+    <string name="error_init_failed">模型初始化失败，请重启应用</string>
+    <string name="error_clone_failed">声音克隆失败，请重试</string>
+    <string name="error_tts_failed">语音生成失败，请重试</string>
+    <string name="error_no_text">请输入要朗读的文本</string>
+
+    <string name="msg_recording">正在录音…</string>
+    <string name="msg_recording_done">录音完成</string>
+    <string name="msg_permission_denied">需要麦克风权限才能录音</string>
+
+    <string name="label_reference_audio">参考音频</string>
+    <string name="label_duration">时长：%1$.1f秒</string>
+    <string name="label_speed">语速</string>
+    <string name="label_steps">推理步数</string>
+</resources>

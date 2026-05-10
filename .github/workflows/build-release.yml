@@ -1,0 +1,91 @@
+name: Build & Release APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Download sherpa-onnx AAR
+        run: |
+          mkdir -p app/libs
+          curl -SL -o app/libs/sherpa-onnx-1.13.1.aar \
+            https://github.com/k2-fsa/sherpa-onnx/releases/download/v1.13.1/sherpa-onnx-1.13.1.aar
+
+      - name: Download ZipVoice TTS model
+        run: |
+          mkdir -p app/src/main/assets/models
+          cd /tmp
+          curl -SL -o zipvoice.tar.bz2 \
+            https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/sherpa-onnx-zipvoice-distill-zh-en-emilia.tar.bz2
+          tar xf zipvoice.tar.bz2
+          rm zipvoice.tar.bz2
+          cp -r sherpa-onnx-zipvoice-distill-zh-en-emilia \
+            $GITHUB_WORKSPACE/app/src/main/assets/models/
+          ls -la $GITHUB_WORKSPACE/app/src/main/assets/models/sherpa-onnx-zipvoice-distill-zh-en-emilia/
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew || true
+
+      - name: Build Debug APK
+        run: |
+          ./gradlew assembleDebug || {
+            echo "Gradle wrapper not found, creating it..."
+            mkdir -p gradle/wrapper
+            cat > gradle/wrapper/gradle-wrapper.properties << 'EOF'
+          distributionBase=GRADLE_USER_HOME
+          distributionPath=wrapper/dists
+          distributionUrl=https\://services.gradle.org/distributions/gradle-8.9-bin.zip
+          zipStoreBase=GRADLE_USER_HOME
+          zipStorePath=wrapper/dists
+          EOF
+            gradle wrapper --gradle-version 8.9
+            ./gradlew assembleDebug
+          }
+
+      - name: Build Release APK
+        run: ./gradlew assembleRelease || true
+
+      - name: List APK outputs
+        run: find app/build/outputs -name "*.apk" -type f || echo "No APK found"
+
+      - name: Upload APKs to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.0
+          name: "声灵 v1.0.0 - 本地AI声音克隆"
+          body: |
+            🔊 声灵 - 完全离线的AI声音克隆工具
+
+            ✨ 功能特性：
+            - 上传3-15秒参考音频，AI学习声音特征
+            - 输入任意文本，用克隆的声音朗读
+            - 完全离线运行，无需联网
+            - 基于ZipVoice零样本声音克隆模型
+            - Material Design 3深色主题
+
+            📦 内置模型：
+            - ZipVoice (中英文零样本声音克隆)
+            - sherpa-onnx推理引擎
+
+            ⚠️ 首次启动需要初始化模型，请耐心等待。
+          files: |
+            app/build/outputs/apk/debug/*.apk
+            app/build/outputs/apk/release/*.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
