@@ -29,30 +29,46 @@ class MainActivity : AppCompatActivity() {
         binding.btnStart.isEnabled = false
 
         lifecycleScope.launch {
-            if (!ModelManager.areModelsCopied(this@MainActivity)) {
-                binding.textInitStatus.text = getString(R.string.status_init_copying)
-                ModelManager.copyModelsFromAssets(this@MainActivity) { current, total ->
-                    runOnUiThread {
-                        binding.progressInit.max = total
-                        binding.progressInit.setProgress(current, true)
-                        binding.textInitStatus.text =
-                            getString(R.string.progress_copying, current, total)
+            if (ModelManager.areModelsReady(this@MainActivity)) {
+                val success = VoiceEngine.initEngine(this@MainActivity)
+                runOnUiThread {
+                    if (success) {
+                        binding.textInitStatus.text = getString(R.string.status_init_done)
+                        binding.layoutInitStatus.visibility = View.GONE
+                        binding.btnStart.isEnabled = true
+                    } else {
+                        binding.textInitStatus.text = getString(R.string.error_init_failed)
                     }
+                }
+                return@launch
+            }
+
+            binding.textInitStatus.text = getString(R.string.status_init_copying)
+            val totalFiles = ModelManager.getTotalFiles()
+
+            val success = ModelManager.downloadModels(this@MainActivity) { fileName, current, total ->
+                runOnUiThread {
+                    binding.progressInit.max = total
+                    binding.progressInit.setProgress(current, true)
+                    val percent = if (total > 0) (current * 100 / total) else 0
+                    binding.textInitStatus.text = "下载模型中… $percent% ($current/$total)\n$fileName"
                 }
             }
 
-            binding.textInitStatus.text = getString(R.string.status_init_loading)
-            val success = with(kotlin.coroutines.coroutineContext) {
-                kotlinx.coroutines.Dispatchers.Default
-                VoiceEngine.initEngine(this@MainActivity)
-            }
-
-            runOnUiThread {
-                if (success) {
-                    binding.textInitStatus.text = getString(R.string.status_init_done)
-                    binding.layoutInitStatus.visibility = View.GONE
-                    binding.btnStart.isEnabled = true
-                } else {
+            if (success) {
+                binding.textInitStatus.text = getString(R.string.status_init_loading)
+                val engineSuccess = VoiceEngine.initEngine(this@MainActivity)
+                runOnUiThread {
+                    if (engineSuccess) {
+                        binding.textInitStatus.text = getString(R.string.status_init_done)
+                        binding.layoutInitStatus.visibility = View.GONE
+                        binding.btnStart.isEnabled = true
+                    } else {
+                        binding.textInitStatus.text = getString(R.string.error_init_failed)
+                    }
+                }
+            } else {
+                runOnUiThread {
                     binding.textInitStatus.text = getString(R.string.error_init_failed)
                 }
             }

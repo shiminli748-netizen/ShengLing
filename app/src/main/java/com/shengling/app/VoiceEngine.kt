@@ -23,15 +23,16 @@ object VoiceEngine {
     fun initEngine(context: Context): Boolean {
         return try {
             val zipVoiceDir = ModelManager.getZipVoiceDir(context)
+            val espeakDir = ModelManager.getEspeakDir(context)
             val config = OfflineTtsConfig(
                 model = OfflineTtsModelConfig(
                     zipvoice = OfflineTtsZipVoiceModelConfig(
                         tokens = File(zipVoiceDir, "tokens.txt").absolutePath,
-                        encoder = File(zipVoiceDir, "text_encoder.onnx").absolutePath,
-                        decoder = File(zipVoiceDir, "fm_decoder.onnx").absolutePath,
+                        encoder = File(zipVoiceDir, "text_encoder_int8.onnx").absolutePath,
+                        decoder = File(zipVoiceDir, "fm_decoder_int8.onnx").absolutePath,
                         vocoder = File(zipVoiceDir, "vocos_24khz.onnx").absolutePath,
-                        dataDir = File(zipVoiceDir, "espeak-ng-data").absolutePath,
-                        lexicon = File(zipVoiceDir, "lexicon.txt").absolutePath,
+                        dataDir = espeakDir.absolutePath,
+                        lexicon = "",
                         featScale = 0.1f,
                         tShift = 0.5f,
                         targetRms = 0.1f,
@@ -73,16 +74,24 @@ object VoiceEngine {
     ): GeneratedAudio? = withContext(Dispatchers.Default) {
         try {
             val engine = tts ?: return@withContext null
-            val refAudio = referenceAudio ?: return@withContext null
+            val refAudio = referenceAudio
 
-            val genConfig = GenerationConfig(
-                speed = speed,
-                referenceAudio = refAudio,
-                referenceSampleRate = referenceSampleRate,
-                referenceText = referenceText,
-                numSteps = numSteps,
-                silenceScale = 0.2f,
-            )
+            val genConfig = if (refAudio != null) {
+                GenerationConfig(
+                    speed = speed,
+                    referenceAudio = refAudio,
+                    referenceSampleRate = referenceSampleRate,
+                    referenceText = referenceText,
+                    numSteps = numSteps,
+                    silenceScale = 0.2f,
+                )
+            } else {
+                GenerationConfig(
+                    speed = speed,
+                    numSteps = numSteps,
+                    silenceScale = 0.2f,
+                )
+            }
 
             val audio = engine.generateWithConfigAndCallback(
                 text = text,

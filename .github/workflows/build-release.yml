@@ -30,20 +30,6 @@ jobs:
             https://github.com/k2-fsa/sherpa-onnx/releases/download/v1.13.1/sherpa-onnx-1.13.1.aar
           ls -lh app/libs/
 
-      - name: Download ZipVoice TTS model
-        run: |
-          mkdir -p app/src/main/assets/models
-          cd /tmp
-          curl -SL -o zipvoice.tar.bz2 \
-            https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/sherpa-onnx-zipvoice-distill-zh-en-emilia.tar.bz2
-          tar xjf zipvoice.tar.bz2
-          rm zipvoice.tar.bz2
-          ls -la sherpa-onnx-zipvoice-distill-zh-en-emilia/
-          cp -r sherpa-onnx-zipvoice-distill-zh-en-emilia \
-            $GITHUB_WORKSPACE/app/src/main/assets/models/
-          echo "=== Model files ==="
-          find $GITHUB_WORKSPACE/app/src/main/assets/models/ -type f | head -20
-
       - name: Generate Gradle wrapper
         run: gradle wrapper --gradle-version 8.9
 
@@ -57,7 +43,14 @@ jobs:
         run: ./gradlew assembleRelease || true
 
       - name: List APK outputs
-        run: find app/build/outputs -name "*.apk" -type f || echo "No APK found"
+        run: find app/build/outputs -name "*.apk" -type f -exec ls -lh {} \;
+
+      - name: Delete old release assets
+        uses: andreaswilli/delete-release-assets-action@v3
+        with:
+          tags: v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload APKs to Release
         uses: softprops/action-gh-release@v2
@@ -70,15 +63,16 @@ jobs:
             ✨ 功能特性：
             - 上传3-15秒参考音频，AI学习声音特征
             - 输入任意文本，用克隆的声音朗读
-            - 完全离线运行，无需联网
-            - 基于ZipVoice零样本声音克隆模型
+            - 完全离线运行，无需联网（模型首次使用时下载）
+            - 基于ZipVoice零样本声音克隆模型 (INT8量化)
             - Material Design 3深色主题
 
-            📦 内置模型：
-            - ZipVoice (中英文零样本声音克隆)
-            - sherpa-onnx推理引擎
+            📦 模型说明：
+            - 首次启动时自动下载ZipVoice INT8模型（约200MB）
+            - 下载完成后完全离线使用
+            - 支持中文和英文语音克隆
 
-            ⚠️ 首次启动需要初始化模型，请耐心等待。
+            ⚠️ 首次启动需要下载模型，请确保网络连接。
           files: |
             app/build/outputs/apk/debug/*.apk
             app/build/outputs/apk/release/*.apk
