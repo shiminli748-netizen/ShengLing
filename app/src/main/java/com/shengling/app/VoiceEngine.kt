@@ -87,8 +87,10 @@ object VoiceEngine {
             val audio = engine.generateWithConfigAndCallback(
                 text = text,
                 config = genConfig,
-                callback = null
-            )
+            ) { _ ->
+                onProgress?.invoke()
+                0
+            }
 
             Log.i(TAG, "Generated speech: ${audio.samples.size} samples at ${audio.sampleRate}Hz")
             audio
