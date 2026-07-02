@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">声灵</string>
+    <string name="subtitle">本地AI声音克隆工具</string>
+
+    <!-- 主界面 -->
+    <string name="clone_voice">声音克隆</string>
+    <string name="tts_voice">文本朗读</string>
+    <string name="clone_voice_subtitle">录制或选择音频，提取声纹</string>
+    <string name="tts_voice_subtitle_ready">用克隆的声音朗读文字</string>
+    <string name="tts_voice_subtitle_disabled">请先克隆声音</string>
+    <string name="model_init">正在初始化AI模型… %1$d%%</string>
+    <string name="model_init_error">模型初始化失败：%1$s</string>
+
+    <!-- 克隆界面 -->
+    <string name="select_file">选择文件</string>
+    <string name="record_audio">录制音频</string>
+    <string name="stop_recording">停止录音</string>
+    <string name="start_clone">开始克隆</string>
+    <string name="step1_label_related">请选择 3-15 秒的参考音频</string>
+    <string name="record_failed">录音失败，请重试</string>
+    <string name="recording_duration">正在录制… %1$d 秒</string>
+    <string name="loading">加载中…</string>
+    <string name="invalid_audio">无法读取该音频文件，请选择 WAV 格式</string>
+    <string name="permission_record_denied">需要录音权限才能录制音频</string>
+    <string name="audio_duration_format">时长 %1$s 秒  |  %2$d Hz  |  %3$d 声道</string>
+    <string name="cancel_clone_title">取消克隆</string>
+    <string name="cancel_clone_message">正在克隆中，确定要退出吗？</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="step1_label">选择音频</string>
+    <string name="step2_label">分析声音特征</string>
+    <string name="step3_label">提取声纹</string>
+    <string name="step4_label">生成声音模型</string>
+    <string name="success_message">声音克隆成功！</string>
+    <string name="clone_complete">克隆完成！可输入文本测试</string>
+    <string name="test_now">去测试</string>
+    <string name="retry">重新克隆</string>
+
+    <!-- TTS 界面 -->
+    <string name="input_text">输入要朗读的文本</string>
+    <string name="quick_suggestions">快捷文本</string>
+    <string name="generate_speech">生成语音</string>
+    <string name="generating_speech">正在生成语音…</string>
+    <string name="play">播放</string>
+    <string name="pause">暂停</string>
+    <string name="save">保存</string>
+    <string name="share">分享</string>
+    <string name="save_success">已保存到下载目录</string>
+    <string name="share_failed">分享失败</string>
+    <string name="save_failed">保存失败</string>
+    <string name="no_voice_available">暂无已克隆声音，请先进行声音克隆</string>
+    <string name="current_voice">当前声音：%1$s</string>
+    <string name="duration_label">时长</string>
+</resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Material 3 深色主题调色板 -->
+    <color name="md_theme_primary">#9ECAFF</color>
+    <color name="md_theme_onPrimary">#003258</color>
+    <color name="md_theme_primaryContainer">#00497D</color>
+    <color name="md_theme_onPrimaryContainer">#D2E4FF</color>
+    <color name="md_theme_secondary">#BAC8DC</color>
+    <color name="md_theme_onSecondary">#253240</color>
+    <color name="md_theme_secondaryContainer">#3B4956</color>
+    <color name="md_theme_onSecondaryContainer">#D6E4F8</color>
+    <color name="md_theme_tertiary">#D7BEE4</color>
+    <color name="md_theme_onTertiary">#3B2948</color>
+    <color name="md_theme_background">#101418</color>
+    <color name="md_theme_onBackground">#E2E2E6</color>
+    <color name="md_theme_surface">#181C20</color>
+    <color name="md_theme_onSurface">#E2E2E6</color>
+    <color name="md_theme_surfaceVariant">#42474E</color>
+    <color name="md_theme_onSurfaceVariant">#C2C7CE</color>
+    <color name="md_theme_outline">#8C9199</color>
+    <color name="md_theme_error">#FFB4AB</color>
+    <color name="md_theme_onError">#690005</color>
+    <color name="md_theme_errorContainer">#93000A</color>
+    <color name="md_theme_onErrorContainer">#FFDAD6</color>
+
+    <!-- 步骤指示器颜色 -->
+    <color name="step_pending">#5A5F66</color>
+    <color name="step_active">#9ECAFF</color>
+    <color name="step_complete">#7FDFA7</color>
+    <color name="step_error">#FFB4AB</color>
+
+    <!-- 通用 -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="card_overlay">#1FE2E2E6</color>
+    <color name="ic_launcher_background">#00497D</color>
+</resources>

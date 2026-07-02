@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 应用内部 filesDir，用于分享 TTS 输出与参考音频 -->
+    <files-path name="internal_files" path="." />
+    <files-path name="tts_output" path="tts_output/" />
+    <files-path name="clone_input" path="clone_input/" />
+</paths>

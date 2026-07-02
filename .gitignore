@@ -1,0 +1,48 @@
+# Built application files
+*.apk
+*.aar
+*.ap_
+*.aab
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Generated files
+bin/
+gen/
+out/
+build/
+release/
+
+# Gradle files
+.gradle/
+build/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Log Files
+*.log
+
+# Android Studio / IntelliJ
+*.iml
+.idea/
+.DS_Store
+captures/
+
+# Keystore files (keep them out of version control)
+*.jks
+*.keystore
+
+# ONNX model files (large, download separately)
+# app/src/main/assets/models/*.onnx
+# app/src/main/assets/models/tokenizer.json
+
+# Keep model config
+!app/src/main/assets/models/config.json
+!app/src/main/assets/models/README.md
+models/
+app/libs/*.aar
